@@ -1,10 +1,10 @@
 SELECT
   concept_hierarchy.concept_id,
-  CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(CONCAT(
-    isNull(concept_hierarchy.soc_concept_name, 'NA'), '||'),
-    isNull(concept_hierarchy.hlgt_concept_name, 'NA')), '||'),
-    isNull(concept_hierarchy.hlt_concept_name, 'NA')), '||'),
-    isNull(concept_hierarchy.pt_concept_name, 'NA')), '||'),
+  STRING(
+    isNull(concept_hierarchy.soc_concept_name, 'NA'), '||',
+    isNull(concept_hierarchy.hlgt_concept_name, 'NA'), '||',
+    isNull(concept_hierarchy.hlt_concept_name, 'NA'), '||',
+    isNull(concept_hierarchy.pt_concept_name, 'NA'), '||',
     isNull(concept_hierarchy.snomed_concept_name, 'NA')) AS "conceptPath",
   hr1.count_value                                     AS num_persons,
   round(1.0 * hr1.count_value / denom.count_value, 5) AS percent_persons,
@@ -118,7 +118,7 @@ FROM (SELECT *
 
   ) concept_hierarchy
     ON hr1.stratum_1 = CAST(concept_hierarchy.concept_id AS VARCHAR(255))
-  ,
+  CROSS JOIN
   (SELECT count_value
    FROM @ohdsi_database_schema.achilles_results WHERE analysis_id = 1) denom
 

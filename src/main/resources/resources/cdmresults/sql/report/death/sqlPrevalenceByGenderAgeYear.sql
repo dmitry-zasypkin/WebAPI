@@ -1,5 +1,5 @@
 SELECT
-  CONCAT(
+  STRING(
     cast(cast(CASE WHEN isNumeric(num.stratum_3) = 1 THEN num.stratum_3 ELSE null END AS INT) * 10 AS VARCHAR(11)), '-',
     cast((cast(CASE WHEN isNumeric(num.stratum_3) = 1 THEN num.stratum_3 ELSE null END AS INT) + 1) * 10 - 1 AS VARCHAR(11))
   ) AS trellis_Name,

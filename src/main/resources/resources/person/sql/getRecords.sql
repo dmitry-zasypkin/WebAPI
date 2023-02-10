@@ -5,7 +5,7 @@ where person_id = @personId
 
 union all
 
-select 'drugera' as "domain", drug_concept_id concept_id, concept_name, drug_era_start_date start_date, drug_era_end_date end_date 
+select 'drugera' as "domain", drug_concept_id concept_id, concept_name, drug_era_start_datetime start_date, drug_era_end_datetime end_date
 from @tableQualifier.drug_era 
 join @tableQualifier.concept c on c.concept_id = drug_era.drug_concept_id
 where person_id = @personId  
@@ -19,7 +19,7 @@ where person_id = @personId
 
 union all
 
-select 'conditionera' as "domain", condition_concept_id concept_id, concept_name, condition_era_start_date start_date, condition_era_end_date end_date 
+select 'conditionera' as "domain", condition_concept_id concept_id, concept_name, condition_era_start_datetime start_date, condition_era_end_datetime end_date
 from @tableQualifier.condition_era
 join @tableQualifier.concept c on c.concept_id = condition_era.condition_concept_id
 where person_id = @personId  

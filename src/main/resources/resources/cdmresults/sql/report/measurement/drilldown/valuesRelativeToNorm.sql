@@ -1,7 +1,7 @@
 select c1.concept_id as MEASUREMENT_CONCEPT_ID,
        c1.concept_name as MEASUREMENT_CONCEPT_NAME,
        c2.concept_id as concept_id,
-       CONCAT(c2.concept_name, ': ', ar1.stratum_3) as concept_name,
+       STRING(c2.concept_name, ': ', ar1.stratum_3) as concept_name,
        ar1.count_value as count_value
 from (
        select cast(CASE WHEN isNumeric(stratum_1) = 1 THEN stratum_1 ELSE null END as int) stratum_1, 

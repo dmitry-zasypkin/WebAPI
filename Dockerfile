@@ -1,8 +1,17 @@
-FROM maven:3.6-jdk-11 as builder
+FROM maven:3.6-jdk-8 as builder
 
 WORKDIR /code
 
-ARG MAVEN_PROFILE=webapi-docker
+ARG MAVEN_PROFILE=webapi-postgresql
+
+COPY lib/intersystems-jdbc-3.2.0.jar /code/lib/
+RUN mvn install:install-file \
+       -Dfile=/code/lib/intersystems-jdbc-3.2.0.jar \
+       -DgroupId=com.intersystems \
+       -DartifactId=intersystems-jdbc \
+       -Dversion=3.2.0 \
+       -Dpackaging=jar \
+       -DgeneratePom=true
 
 # Download dependencies
 COPY pom.xml /code/

@@ -18,7 +18,7 @@ ELSE concept_id END
 CASE WHEN (concept_name LIKE 'Inpatient%' OR concept_name LIKE 'Outpatient%' ) AND (concept_name LIKE '%primary%' OR concept_name LIKE '%1st position%') THEN 1
 WHEN (concept_name LIKE 'Inpatient%' OR concept_name LIKE 'Outpatient%' ) AND (concept_name NOT LIKE '%primary%' AND concept_name NOT LIKE '%1st position%') THEN 2
 ELSE 0 END AS concept_group_id,
-CONCAT(
+STRING(
   CASE WHEN concept_name LIKE 'Inpatient%' THEN 'Claim- Inpatient: '
   WHEN concept_name LIKE 'Outpatient%' THEN 'Claim- Outpatient: '
   ELSE concept_name END,

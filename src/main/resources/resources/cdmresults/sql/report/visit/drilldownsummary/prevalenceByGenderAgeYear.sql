@@ -1,7 +1,7 @@
 SELECT
   c1.concept_id                                                          AS concept_id,
   c1.concept_name                                                        AS concept_name,
-  CONCAT(cast(CAST(CASE WHEN isNumeric(num_stratum_4) = 1 THEN num_stratum_4 ELSE null END AS INT) * 10 AS VARCHAR(11)), 
+  STRING(cast(CAST(CASE WHEN isNumeric(num_stratum_4) = 1 THEN num_stratum_4 ELSE null END AS INT) * 10 AS VARCHAR(11)),
          '-', cast((CAST(CASE WHEN isNumeric(num_stratum_4) = 1 THEN num_stratum_4 ELSE null END AS INT) + 1) * 10 - 1 AS
                                                                 VARCHAR(11))) AS trellis_name,
   --age decile

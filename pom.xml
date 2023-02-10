@@ -84,7 +84,7 @@
 
     <security.provider>DisabledSecurity</security.provider>
     <security.token.expiration>43200</security.token.expiration>
-    <security.origin>http://localhost</security.origin>
+    <security.origin>*</security.origin>
     <security.ssl.enabled>false</security.ssl.enabled>
     <security.oauth.callback.ui>http://localhost/Atlas/#/welcome</security.oauth.callback.ui>
     <security.oauth.callback.api>http://localhost:8080/WebAPI/user/oauth/callback</security.oauth.callback.api>
@@ -354,14 +354,15 @@
           </execution>
         </executions>
         <configuration>
-          <generateGitPropertiesFile>false</generateGitPropertiesFile>
-          <failOnNoGitDirectory>false</failOnNoGitDirectory>
+		  <skip>true</skip>
+          <!--<generateGitPropertiesFile>false</generateGitPropertiesFile>
+          <failOnNoGitDirectory>false</failOnNoGitDirectory> -->
           <!-- only include properties to speed up plugin -->
           <!-- ref: https://github.com/git-commit-id/git-commit-id-maven-plugin/issues/462 -->
-          <includeOnlyProperties>
+          <!-- <includeOnlyProperties>
               <includeOnlyProperty>git.branch</includeOnlyProperty>
               <includeOnlyProperty>git.commit.id.abbrev</includeOnlyProperty>
-          </includeOnlyProperties>
+          </includeOnlyProperties>-->
         </configuration>
       </plugin>
       <plugin>
@@ -1254,15 +1255,15 @@
       <id>webapi-postgresql</id>
       <properties>
         <datasource.driverClassName>org.postgresql.Driver</datasource.driverClassName>
-        <datasource.url>jdbc:postgresql://54.209.111.128:5432/vocabularyv5</datasource.url>
-        <datasource.username>USER</datasource.username>
-        <datasource.password>PASS</datasource.password>
+        <datasource.url>jdbc:postgresql://postgresql:5432/omop</datasource.url>
+        <datasource.username>postgres</datasource.username>
+        <datasource.password>1234</datasource.password>
         <datasource.dialect>postgresql</datasource.dialect>
-        <datasource.ohdsi.schema>ohdsi</datasource.ohdsi.schema>
+        <datasource.ohdsi.schema>webapi</datasource.ohdsi.schema>
         <flyway.datasource.driverClassName>${datasource.driverClassName}</flyway.datasource.driverClassName>
         <flyway.datasource.url>${datasource.url}</flyway.datasource.url>
-        <flyway.datasource.username>userWithWritesToOhdsiSchema</flyway.datasource.username>
-        <flyway.datasource.password>PASS</flyway.datasource.password>
+        <flyway.datasource.username>postgres</flyway.datasource.username>
+        <flyway.datasource.password>1234</flyway.datasource.password>
         <flyway.schemas>${datasource.ohdsi.schema}</flyway.schemas>
         <flyway.placeholders.ohdsiSchema>${datasource.ohdsi.schema}</flyway.placeholders.ohdsiSchema>
         <flyway.locations>classpath:db/migration/postgresql</flyway.locations>
@@ -1275,6 +1276,14 @@
         <security.db.datasource.authenticationQuery>select password from ${security.db.datasource.schema}.users_data where \
           lower(email) = lower(?)</security.db.datasource.authenticationQuery>
       </properties>
+      <dependencies>
+        <dependency>
+          <groupId>com.intersystems</groupId>
+          <artifactId>intersystems-jdbc</artifactId>
+          <version>3.2.0</version>
+          <type>jar</type>
+        </dependency>
+      </dependencies>
     </profile>
     <profile>
       <id>webapi-docker</id>
@@ -1285,15 +1294,15 @@
         <miredot.phase>none</miredot.phase>
         <skipTests>true</skipTests>
         <datasource.driverClassName>org.postgresql.Driver</datasource.driverClassName>
-        <datasource.url>jdbc:postgresql://54.209.111.128:5432/vocabularyv5</datasource.url>
-        <datasource.username>USER</datasource.username>
-        <datasource.password>PASS</datasource.password>
+        <datasource.url>jdbc:postgresql://192.168.1.8:5432/OHDSI</datasource.url>
+        <datasource.username>ohdsi_admin</datasource.username>
+        <datasource.password>t8tia4XEFmBsN9MVJpwcE5iQT2g59DUt</datasource.password>
         <datasource.dialect>postgresql</datasource.dialect>
-        <datasource.ohdsi.schema>ohdsi</datasource.ohdsi.schema>
+        <datasource.ohdsi.schema>webapi</datasource.ohdsi.schema>
         <flyway.datasource.driverClassName>${datasource.driverClassName}</flyway.datasource.driverClassName>
         <flyway.datasource.url>${datasource.url}</flyway.datasource.url>
-        <flyway.datasource.username>userWithWritesToOhdsiSchema</flyway.datasource.username>
-        <flyway.datasource.password>PASS</flyway.datasource.password>
+        <flyway.datasource.username>ohdsi_admin</flyway.datasource.username>
+        <flyway.datasource.password>t8tia4XEFmBsN9MVJpwcE5iQT2g59DUt</flyway.datasource.password>
         <flyway.schemas>${datasource.ohdsi.schema}</flyway.schemas>
         <flyway.placeholders.ohdsiSchema>${datasource.ohdsi.schema}</flyway.placeholders.ohdsiSchema>
         <flyway.locations>classpath:db/migration/postgresql</flyway.locations>
@@ -1314,9 +1323,17 @@
         <repository>
           <id>ohdsi</id>
           <name>repo.ohdsi.org</name>
-          <url>http://repo.ohdsi.org:8085/nexus/content/groups/public</url>
+          <url>https://repo.ohdsi.org/nexus/content/groups/public</url>
         </repository>
       </repositories>
+      <dependencies>
+        <dependency>
+          <groupId>com.intersystems</groupId>
+          <artifactId>intersystems-jdbc</artifactId>
+          <version>3.2.0</version>
+          <type>jar</type>
+        </dependency>
+      </dependencies>
     </profile>
     <profile>
       <id>webapi-mssql</id>

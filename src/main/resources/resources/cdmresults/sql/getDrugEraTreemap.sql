@@ -1,6 +1,6 @@
 SELECT
   concept_hierarchy.rxnorm_ingredient_concept_id                 concept_id,
-  CONCAT(
+  STRING(
     isnull(concept_hierarchy.atc1_concept_name, 'NA'), '||',
     isnull(concept_hierarchy.atc3_concept_name, 'NA'), '||',
     isnull(concept_hierarchy.atc5_concept_name, 'NA'), '||',
@@ -9,7 +9,7 @@ SELECT
   hr1.count_value                           AS                   num_persons,
   1.0 * hr1.count_value / denom.count_value AS                   percent_persons,
   hr2.avg_value                             AS                   length_of_era
-FROM (SELECT *
+FROM ((SELECT *
       FROM @ohdsi_database_schema.achilles_results WHERE analysis_id = 900) hr1
   INNER JOIN
   (SELECT
@@ -104,7 +104,7 @@ FROM (SELECT *
     ON atc3_to_atc1.atc1_concept_id = atc1.concept_id
   ) concept_hierarchy
     ON hr1.stratum_1 = CAST(concept_hierarchy.rxnorm_ingredient_concept_id AS VARCHAR)
-  ,
+  CROSS JOIN
   (SELECT count_value
-   FROM @ohdsi_database_schema.achilles_results WHERE analysis_id = 1) denom
+   FROM @ohdsi_database_schema.achilles_results WHERE analysis_id = 1) denom)
 ORDER BY hr1.count_value DESC
